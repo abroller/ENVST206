@@ -16,3 +16,4 @@ x*10
 y <- c(300,200,100,50)
 #divide all numbers by 2
 y/2
+
