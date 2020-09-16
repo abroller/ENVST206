@@ -46,5 +46,36 @@ t.test(ch4$CH4_Flux ~ ch4$herbivory)
 help(t.test)
 t.test(ch4$CH4_Flux ~ ch4$herbivory, alternative = "greater")
 
+## ANOVA ##
+#read in insect data
+datI <- read.csv("/Users/abby/Documents/ENVST206/insect_richness.csv")
+datI$urbanName <- as.factor(datI$urbanName) 
+datI$nameN <- as.numeric(datI$urbanName)
 
+#question 4: test assumptions 
+#check normality
+shapiro.test(datI$Richness[datI$nameN == 1])
+shapiro.test(datI$Richness[datI$nameN == 2])
+shapiro.test(datI$Richness[datI$nameN == 3])
+shapiro.test(datI$Richness[datI$nameN == 4])
+#check equal variance
+bartlett.test(datI$Richness ~ datI$urbanName)
+bartlett.test(datI$Richness ~ datI$nameN)
 
+#specify model for species richness and urban type
+in.mod <- lm(datI$Richness ~ datI$urbanName)
+#run the ANOVA
+in.aov <- aov(in.mod)
+#display ANOVA table
+summary(in.aov)
+
+#posthoc test: Tukey HSD
+tukeyT <-TukeyHSD(in.aov)
+#view results
+tukeyT
+
+#make a plot, make axes labels smaller than usual so they fit
+plot(tukeyT, cex.axis=.75)
+
+#means of each group
+tapply(datI$Richness, datI$urbanName, "mean")
