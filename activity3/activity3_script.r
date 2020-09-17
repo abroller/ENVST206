@@ -79,3 +79,19 @@ plot(tukeyT, cex.axis=.75)
 
 #means of each group
 tapply(datI$Richness, datI$urbanName, "mean")
+
+## chi-squared goodness of fit test ##
+
+#set up contingency table
+species <- matrix(c(18,8,15,32), ncol=2, byrow=TRUE)
+colnames(species) <- c("Not protected", "Protected")
+rownames(species) <- c("Declining", "Stable/Increasing")
+species
+
+#make a mosaic plot to visualize proportions
+mosaicplot(species, xlab="population status", ylab="legal protection", main="Legal protection impacts on populations")
+
+#conduct a chi-squared test 
+#to determine if there is an impact of legal protections on population
+chisq.test(species)
+
