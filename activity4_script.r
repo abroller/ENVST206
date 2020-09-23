@@ -123,6 +123,8 @@ mlFitted <- fitted(mlr)
 plot(mlFitted, mlr.res, pch=20, main="Residual Variance Plot")
 abline(h=0)
 
+## interpret the regression
+summary(mlr)
 
 
 
