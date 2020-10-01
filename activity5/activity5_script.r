@@ -36,3 +36,4 @@ ggplot(data = pr,
   labs(x = "year", y = "Annual precipitation (mm)")+
   theme_classic()
 
+
