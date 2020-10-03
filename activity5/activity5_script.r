@@ -54,21 +54,63 @@ legend("topleft",
        lwd = 1,
        bty = "n")
 
-# make a plot of mean annual maximum temperatures in NY and ND
+
+## make a plot of mean annual maximum temperatures in NY and ND ##
+
+# make a data frame of max temp
+# remove NA
+datT <- na.omit(data.frame(TMAX = datW$TMAX,
+                           NAME = datW$NAME,
+                           year = datW$year))
+# calculate average max temp per year
+avgTmax <- aggregate(datT$TMAX, by=list(datT$NAME, datT$year), FUN="mean", na.rm = TRUE)
+
+#change column names
+colnames(avgTmax) <- c("NAME", "Year", "Tmax")
+
+# look at number of observations per year
+avgTmax$ncount <- aggregate(datT$TMAX, by=list(datT$NAME, datT$year), FUN="length")$x
+
+# only use years with enough observations
+Tmx <- avgTmax[avgTmax$ncount >= 364, ]
+
+# for each location
+NY <- Tmx[Tmx$NAME == nameS[5],]
+ND <- Tmx[Tmx$NAME == nameS[3],]
+
+# make a plot
+plot(NY$Year, NY$Tmax,
+     type = "b",
+     pch = 20,
+     col = "royalblue1",
+     main = "Mean Annual Maximum Temperatures in NY and ND",
+     ylab = "Mean Maximum Temperature (Celcius)",
+     xlab = "Year",
+     yaxt = "n",
+     ylim = c(8,16))
+axis(2, seq(0,20, by=2), las=2)
+points(ND$Year, ND$Tmax,
+       type = "b",
+       pch = 20,
+       col = "saddlebrown")
+legend("topleft",
+       c("New York", "North Dakota"),
+       col = c("royalblue1", "saddlebrown"),
+       pch=19,
+       lwd=1,
+       bty="n")
 
 
-install.packages("ggplot2")
+## plotting with ggplot2 ##
+
+#install.packages("ggplot2")
 library(ggplot2)
 
-#base r plot
-plot(pr$year, pr$totalP)
-
-ggplot(data = pr,
-         aes(x = year,
-             y = totalP,
-             color = NAME))+
-  geom_point()+
-  geom_path()+
-  labs(x = "year", y = "Annual precipitation (mm)")+
-  theme_classic()
+# look at annual precipitation across all sites
+ggplot(data = pr, aes(x = year, y = totalP, color = NAME))+
+  geom_point(alpha=0.5)+
+  geom_path(alpha=0.5)+
+  labs(x="year", y="Annual Precipitation (mm)")+
+  theme_classic()+
+  scale_color_manual(values = c("darkseagreen", "lightpink2", "lightblue3","gold","lightslateblue"))
 
