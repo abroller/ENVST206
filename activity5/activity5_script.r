@@ -106,7 +106,7 @@ legend("topleft",
 #install.packages("ggplot2")
 library(ggplot2)
 
-# look at annual precipitation across all sites
+# scatterplot of annual precipitation across all sites
 ggplot(data = pr, aes(x = year, y = totalP, color = NAME))+
   geom_point(alpha=0.5)+
   geom_path(alpha=0.5)+
@@ -114,3 +114,25 @@ ggplot(data = pr, aes(x = year, y = totalP, color = NAME))+
   theme_classic()+
   scale_color_manual(values = c("darkseagreen", "lightpink2", "lightblue3","gold","lightslateblue"))
 
+# violin plot of daily minimum temp
+ggplot(data = datW, aes(x=NAME, y=TMIN))+
+  geom_violin(fill=rgb(0.933,0.953,0.98))+
+  geom_boxplot(width=0.2, size=0.25, fill="grey90")+
+  theme_classic()
+
+# look more closely at daily patterns in Mormon Flat AZ in 1974
+sub <- datW[datW$NAME == nameS[4] & datW$year == 1974, ]
+# specify date format
+sub$date <- as.Date(sub$DATE, "%Y-%m-%d")
+# make scatterplot with date on the x axis
+ggplot(data=sub, aes(x=DATE, y=TMAX))+
+  geom_point()+
+  geom_path()+
+  theme_classic()+
+  labs(x="Year", y="Maximum Temperature (C)")
+
+# make a barplot for precipitation
+ggplot(data=sub, aes(x=DATE, y=PRCP))+
+  geom_col(fill="royalblue3")+
+  theme_classic()+
+  labs(x="Year", y="Daily precipitation (mm)")
