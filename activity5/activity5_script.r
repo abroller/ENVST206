@@ -8,6 +8,9 @@ datW$NAME <- as.factor(datW$NAME)
 nameS <- levels(datW$NAME)
 nameS
 
+
+## question 2 ##
+
 # make dataframe with just precip, year, and site name
 # remove NA data points using na.omit
 datP <- na.omit(data.frame(PRCP = datW$PRCP,
@@ -55,7 +58,8 @@ legend("topleft",
        bty = "n")
 
 
-## make a plot of mean annual maximum temperatures in NY and ND ##
+## question 3 ##
+## make a plot of mean annual maximum temperatures in NY and ND 
 
 # make a data frame of max temp
 # remove NA
@@ -106,6 +110,8 @@ legend("topleft",
 #install.packages("ggplot2")
 library(ggplot2)
 
+## question 5 ##
+
 # scatterplot of annual precipitation across all sites
 ggplot(data = pr, aes(x = year, y = totalP, color = NAME))+
   geom_point(alpha=0.5)+
@@ -120,19 +126,52 @@ ggplot(data = datW, aes(x=NAME, y=TMIN))+
   geom_boxplot(width=0.2, size=0.25, fill="grey90")+
   theme_classic()
 
+## question 7 ##
+
 # look more closely at daily patterns in Mormon Flat AZ in 1974
 sub <- datW[datW$NAME == nameS[4] & datW$year == 1974, ]
 # specify date format
-sub$date <- as.Date(sub$DATE, "%Y-%m-%d")
-# make scatterplot with date on the x axis
+sub$DATE <- as.Date(sub$DATE, "%Y-%m-%d")
+# make scatterplot for max temp
 ggplot(data=sub, aes(x=DATE, y=TMAX))+
   geom_point()+
   geom_path()+
   theme_classic()+
-  labs(x="Year", y="Maximum Temperature (C)")
-
+  labs(x="Year", y="Maximum Temperature (C)", title="Mormon Flat, AZ: Daily Maximum Temperature 1974")
 # make a barplot for precipitation
 ggplot(data=sub, aes(x=DATE, y=PRCP))+
   geom_col(fill="royalblue3")+
   theme_classic()+
-  labs(x="Year", y="Daily precipitation (mm)")
+  labs(x="Year", y="Daily precipitation (mm)", title="Mormon Flat, AZ: Daily Precipitation 1974")
+
+## question 8 ##
+
+# plot daily patterns in  WA in 1974
+subWA <- datW[datW$NAME == nameS[1] & datW$year == 1974,]
+# specify date format
+subWA$DATE <- as.Date(subWA$DATE, "%Y-%m-%d")
+# make scatterplot of max temp
+ggplot(data=subWA, aes(x=DATE, y=TMAX))+
+  geom_point()+
+  geom_path()+
+  theme_classic()+
+  labs(x="Year", y="Maximum Temperature (C)", title="Aberdeen, WA: Daily Maximum Temperature 1974")
+#make barplot of precipitation
+ggplot(data=subWA, aes(x=DATE, y=PRCP))+
+  geom_col(fill="royalblue3")+
+  theme_classic()+
+  labs(x="Year", y="Daily precipitation (mm)", title="Aberdeen, WA: Daily Precipitation 1974")
+
+## question 9 ##
+# compare daily minimum temperature since 2000 in CA
+subCA <- datW[datW$NAME == nameS[2] & datW$year >= 2000, ]
+# format date
+subCA$DATE <- as.Date(subCA$DATE, "%Y-%m-%d")
+# plot of tmin
+ggplot(data=subCA, aes(x=DATE, y=TMIN))+
+  geom_point()+
+  geom_path()+
+  theme_classic()+
+  labs(x="Year", y="Daily Minimum Temperature (C)", title="Livermore, CA: Daily Minimum Temperature (2000-2019)")
+
+
