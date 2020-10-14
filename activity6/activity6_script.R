@@ -48,3 +48,4 @@ gdf15 <- data.frame(GLACNAME = g2015@data$GLACNAME,
 #join these two data tables by glacier name
   # full_join is a dplyr function
 gAll <- full_join(gdf66, gdf15, by="GLACNAME")
+
