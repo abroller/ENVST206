@@ -78,6 +78,11 @@ mean(gAll$gdiff)
 # find std dev of % change
 sd(gAll$gdiff)
 
+#find glacier with largest percent loss
+gAll[gAll$gdiff == max(gAll$gdiff),]
+#find glacier with smallest percent loss
+gAll[gAll$gdiff == min(gAll$gdiff),]
+
 # find glacier with largest 1966 area 
 gAll[gAll$area66 == max(gAll$area66),]
 # find glacier with smallest 1966 area
