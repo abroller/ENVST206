@@ -206,11 +206,6 @@ bartlett.test(NYstn$SO2 ~ NYstn$Year)
 mean(NYstn$SO2[NYstn$Year == "1990"])
 mean(NYstn$SO2[NYstn$Year == "2008"])
 
-## to clean up:
-# make one plot comparing changes over time (all cities)
-# one plot comparing the cities in 1990
-# one plot comparing the cities in 2008
-# summary statistics 
 
 
 
