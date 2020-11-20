@@ -70,7 +70,7 @@ colnames(countNY) <- c("Year","Station","count")
 NYstn <- SO2.NY[SO2.NY$stationID == "360590005",]
 
 
-### general summary statistics ----
+### summary statistics ----
 
 # create a data table of yearly mean and standard deviation of daily max so2 concentration from each site 
 SO2stats <- aggregate(SO2.NY$SO2, by=list(SO2.NY$Year), FUN="mean")
@@ -90,10 +90,22 @@ SO2stats[1,4]-SO2stats[2,4]
 # in DE
 SO2stats[1,6]-SO2stats[2,6]
 
+## calculate maximum emissions
+max(SO2.NY$SO2[SO2.NY$Year == "1990"])
+max(SO2.NY$SO2[SO2.NY$Year == "2008"])
+max(SO2.OH$SO2[SO2.OH$Year == "1990"])
+max(SO2.OH$SO2[SO2.OH$Year == "2008"])
+max(SO2.DE$SO2[SO2.DE$Year == "1990"])
+max(SO2.DE$SO2[SO2.DE$Year == "2008"])
+
+# calculate mean SO2 emissions for NY Station 360590005
+mean(NYstn$SO2[NYstn$Year == "1990"])
+mean(NYstn$SO2[NYstn$Year == "2008"])
+
 
 ### t-test: is there a reduction between years ? ----
 
-## test assumptions for t test 
+## assumptions for t test 
 
 # qq plot to test for normality
 qqnorm(SO2.NY$SO2[SO2.NY$Year == "1990"])
@@ -124,6 +136,16 @@ bartlett.test(SO2.DE$SO2 ~ as.factor(SO2.DE$Year))
 t.test(SO2.NY$SO2[SO2.NY$Year == "1990"],SO2.NY$SO2[SO2.NY$Year == "2008"], alternative = "greater")
 t.test(SO2.OH$SO2[SO2.OH$Year == "1990"],SO2.OH$SO2[SO2.OH$Year == "2008"], alternative = "greater")
 t.test(SO2.DE$SO2[SO2.DE$Year == "1990"],SO2.DE$SO2[SO2.DE$Year == "2008"], alternative = "greater")
+
+# try to run a t test for NY station 360590005
+# test for normality
+shapiro.test(NYstn$SO2[NYstn$Year == "1990"])
+shapiro.test(NYstn$SO2[NYstn$Year == "2008"])
+# fails normality test
+# test for equal variance
+bartlett.test(NYstn$SO2 ~ NYstn$Year)
+# fails equal variance test
+# so we can't run a t test for this station 
 
 
 ### ANOVA: is there a difference between cities? ----
@@ -193,18 +215,7 @@ ggplot(data=NYstn, aes(x=DOY, y=SO2, color=Year))+
   scale_color_manual(values = c("salmon","royalblue1"))+
   theme(plot.title = element_text(size = 15, hjust=0.5))
 
-# try to run a t test for NY station
-# test for normality
-shapiro.test(NYstn$SO2[NYstn$Year == "1990"])
-shapiro.test(NYstn$SO2[NYstn$Year == "2008"])
-# fails normality test
-# test for equal variance
-bartlett.test(NYstn$SO2 ~ NYstn$Year)
-# fails equal variance test
-# so we can't run a t test for this station 
 
-mean(NYstn$SO2[NYstn$Year == "1990"])
-mean(NYstn$SO2[NYstn$Year == "2008"])
 
 
 
